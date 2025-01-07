@@ -1,4 +1,4 @@
-FROM ubuntu:23.04 AS build-stage
+FROM ubuntu:24.04 AS build-stage
 
 RUN apt-get update && apt-get install -y libgeoip-dev libmysqlclient-dev build-essential && apt-get clean
 
@@ -15,7 +15,7 @@ RUN pip install poetry poetry-plugin-export
 COPY ./bf2-worker/pyproject.toml ./poetry.lock* /tmp/
 RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
 
-FROM ubuntu:23.04
+FROM ubuntu:24.04
 
 # AMD64 build for bfbc2
 # RUN apt-get install -y wget software-properties-common gnupg2 xvfb
@@ -48,4 +48,4 @@ COPY ./ealist /bf2-api/ealist
 COPY --from=build-stage /gslist/gslist /bf2-api/gslist-2
 WORKDIR /bf2-api
 
-ENTRYPOINT [ "python3.11", "serverList.py" ]
+ENTRYPOINT [ "python3.12", "serverList.py" ]
